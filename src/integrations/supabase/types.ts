@@ -14,16 +14,199 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      investment_packages: {
+        Row: {
+          business_type: string
+          created_at: string
+          description: string
+          duration_months: number
+          expected_roi_max: number
+          expected_roi_min: number
+          id: string
+          is_active: boolean | null
+          min_investment: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          business_type: string
+          created_at?: string
+          description: string
+          duration_months: number
+          expected_roi_max: number
+          expected_roi_min: number
+          id?: string
+          is_active?: boolean | null
+          min_investment: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          business_type?: string
+          created_at?: string
+          description?: string
+          duration_months?: number
+          expected_roi_max?: number
+          expected_roi_min?: number
+          id?: string
+          is_active?: boolean | null
+          min_investment?: number
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      investments: {
+        Row: {
+          actual_roi: number | null
+          amount: number
+          created_at: string
+          id: string
+          investor_id: string
+          maturity_date: string
+          package_id: string
+          start_date: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          actual_roi?: number | null
+          amount: number
+          created_at?: string
+          id?: string
+          investor_id: string
+          maturity_date: string
+          package_id: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          actual_roi?: number | null
+          amount?: number
+          created_at?: string
+          id?: string
+          investor_id?: string
+          maturity_date?: string
+          package_id?: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investments_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "investment_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          content: string | null
+          created_at: string
+          created_by: string
+          id: string
+          media_type: string | null
+          media_url: string | null
+          package_id: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          created_by: string
+          id?: string
+          media_type?: string | null
+          media_url?: string | null
+          package_id?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          media_type?: string | null
+          media_url?: string | null
+          package_id?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "investment_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "client"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +333,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "client"],
+    },
   },
 } as const
