@@ -30,18 +30,18 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/packages" className="text-background/80 hover:text-secondary transition-colors">
-                  Investment Packages
-                </Link>
-              </li>
-              <li>
                 <Link to="/about" className="text-background/80 hover:text-secondary transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard" className="text-background/80 hover:text-secondary transition-colors">
-                  Investor Dashboard
+                <Link to="/testimonials" className="text-background/80 hover:text-secondary transition-colors">
+                  Testimonials
+                </Link>
+              </li>
+              <li>
+                <Link to="/invest" className="text-background/80 hover:text-secondary transition-colors">
+                  Start Investing
                 </Link>
               </li>
             </ul>
@@ -52,18 +52,18 @@ export const Footer = () => {
             <h4 className="font-heading font-semibold mb-4 text-secondary">Legal</h4>
             <ul className="space-y-2 font-body">
               <li>
-                <Link to="/privacy" className="text-background/80 hover:text-secondary transition-colors">
-                  Privacy Policy
+                <Link to="/faq" className="text-background/80 hover:text-secondary transition-colors">
+                  FAQ
                 </Link>
               </li>
               <li>
                 <Link to="/terms" className="text-background/80 hover:text-secondary transition-colors">
-                  Terms of Service
+                  Terms & Conditions
                 </Link>
               </li>
               <li>
-                <Link to="/disclosure" className="text-background/80 hover:text-secondary transition-colors">
-                  Risk Disclosure
+                <Link to="/contact" className="text-background/80 hover:text-secondary transition-colors">
+                  Contact Us
                 </Link>
               </li>
             </ul>
@@ -75,21 +75,25 @@ export const Footer = () => {
             <ul className="space-y-3 font-body text-sm">
               <li className="flex items-start gap-2">
                 <Mail className="h-4 w-4 text-secondary mt-0.5 flex-shrink-0" />
-                <a href="mailto:info@cesconsult.ag" className="text-background/80 hover:text-secondary transition-colors">
-                  info@cesconsult.ag
+                <a href="mailto:ces@gmail.com" className="text-background/80 hover:text-secondary transition-colors">
+                  ces@gmail.com
                 </a>
               </li>
               <li className="flex items-start gap-2">
                 <Phone className="h-4 w-4 text-secondary mt-0.5 flex-shrink-0" />
-                <a href="tel:+1234567890" className="text-background/80 hover:text-secondary transition-colors">
-                  +1 (234) 567-890
-                </a>
+                <div className="text-background/80">
+                  <a href="tel:0596083868" className="hover:text-secondary transition-colors block">
+                    0596083868
+                  </a>
+                  <a href="tel:0245590858" className="hover:text-secondary transition-colors block">
+                    0245590858
+                  </a>
+                </div>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 text-secondary mt-0.5 flex-shrink-0" />
                 <span className="text-background/80">
-                  123 Agriculture Lane<br />
-                  Farmville, AG 12345
+                  Accra, Ghana
                 </span>
               </li>
             </ul>
