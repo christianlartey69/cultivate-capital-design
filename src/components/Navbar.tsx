@@ -58,11 +58,17 @@ export const Navbar = () => {
             <Link to="/" className="text-foreground hover:text-primary transition-colors font-medium">
               Home
             </Link>
-            <Link to="/packages" className="text-foreground hover:text-primary transition-colors font-medium">
-              Investment Packages
-            </Link>
             <Link to="/about" className="text-foreground hover:text-primary transition-colors font-medium">
               About
+            </Link>
+            <Link to="/testimonials" className="text-foreground hover:text-primary transition-colors font-medium">
+              Testimonials
+            </Link>
+            <Link to="/faq" className="text-foreground hover:text-primary transition-colors font-medium">
+              FAQ
+            </Link>
+            <Link to="/contact" className="text-foreground hover:text-primary transition-colors font-medium">
+              Contact
             </Link>
           </div>
 
