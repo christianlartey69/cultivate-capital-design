@@ -2,198 +2,268 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Navbar } from "@/components/Navbar";
-import { ArrowRight, TrendingUp, Wallet } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Footer } from "@/components/Footer";
+import DashboardStats from "@/components/dashboard/DashboardStats";
+import AssetCard from "@/components/dashboard/AssetCard";
+import { Calendar, MessageSquare, Loader2 } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 interface Investment {
   id: string;
   amount: number;
   status: string;
-  start_date: string;
+  created_at: string;
   maturity_date: string;
+  start_date: string;
   actual_roi: number | null;
-  package_id: string;
   investment_packages: {
     name: string;
     expected_roi_min: number;
     expected_roi_max: number;
+    duration_months: number;
   };
 }
 
-export default function ClientDashboard() {
-  const { user, loading } = useAuth();
+interface Asset {
+  id: string;
+  unique_tag_id: string;
+  asset_name: string;
+  asset_type: string;
+  purchase_amount: number;
+  purchase_date: string;
+  start_date: string;
+  expected_end_date: string;
+  current_phase: string;
+  status: string;
+  thumbnail_url?: string;
+}
+
+const ClientDashboard = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { user } = useAuth();
   const [investments, setInvestments] = useState<Investment[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!user) {
       navigate("/login");
+      return;
     }
-  }, [user, loading, navigate]);
+  }, [user, navigate]);
 
   useEffect(() => {
-    if (user) {
-      fetchInvestments();
-    }
+    const fetchData = async () => {
+      if (!user) return;
+
+      try {
+        // Fetch investments
+        const { data: investmentsData, error: investmentsError } = await supabase
+          .from("investments")
+          .select(`
+            *,
+            investment_packages (
+              name,
+              expected_roi_min,
+              expected_roi_max,
+              duration_months
+            )
+          `)
+          .eq("investor_id", user.id)
+          .order("created_at", { ascending: false });
+
+        if (investmentsError) throw investmentsError;
+        setInvestments(investmentsData || []);
+
+        // Fetch assets
+        const { data: assetsData, error: assetsError } = await supabase
+          .from("assets")
+          .select("*")
+          .eq("investor_id", user.id)
+          .order("created_at", { ascending: false });
+
+        if (assetsError) throw assetsError;
+        setAssets(assetsData || []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [user]);
 
-  const fetchInvestments = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("investments")
-        .select(`
-          *,
-          investment_packages (
-            name,
-            expected_roi_min,
-            expected_roi_max
-          )
-        `)
-        .eq("investor_id", user?.id)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      setInvestments(data || []);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load investments",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
-  const activeInvestments = investments.filter(inv => inv.status === "active");
+  const activeAssets = assets.filter((asset) => asset.status === "active").length;
+  
+  // Calculate pending ROI (15% of total invested for active investments)
+  const pendingROI = investments
+    .filter((inv) => inv.status === "active")
+    .reduce((sum, inv) => sum + (Number(inv.amount) * 0.15), 0);
 
-  if (loading || isLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <div className="container mx-auto px-4 py-8">
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-muted/30">
       <Navbar />
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-heading font-bold text-foreground mb-2">My Dashboard</h1>
-          <p className="text-muted-foreground">Track and manage your investments</p>
-        </div>
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">Investor Dashboard</h1>
+              <p className="text-muted-foreground mt-1">Welcome back! Track your farm investments</p>
+            </div>
+            <Button onClick={() => navigate("/invest")}>
+              New Investment
+            </Button>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Invested</CardTitle>
-              <Wallet className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">${totalInvested.toLocaleString()}</div>
-            </CardContent>
-          </Card>
+          {/* Stats Cards */}
+          <DashboardStats
+            totalInvested={totalInvested}
+            activeAssets={activeAssets}
+            pendingROI={pendingROI}
+            nextVisit="Oct 5, 2025"
+          />
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Investments</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{activeInvestments.length}</div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Investments</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{investments.length}</div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-heading font-bold text-foreground">My Investments</h2>
-          <Button onClick={() => navigate("/invest")}>
-            New Investment <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-1 gap-6">
-          {investments.length === 0 ? (
-            <Card>
-              <CardContent className="py-8 text-center">
-                <p className="text-muted-foreground mb-4">You don't have any investments yet</p>
-                <Button onClick={() => navigate("/invest")}>Make Your First Investment</Button>
-              </CardContent>
-            </Card>
-          ) : (
-            investments.map((investment) => (
-              <Card key={investment.id}>
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column: Assets */}
+            <div className="lg:col-span-2 space-y-6">
+              <Card>
                 <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle>{investment.investment_packages.name}</CardTitle>
-                      <CardDescription>
-                        Started: {new Date(investment.start_date).toLocaleDateString()}
-                      </CardDescription>
+                  <CardTitle>My Assets</CardTitle>
+                  <CardDescription>Your livestock and farm investments</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {assets.length === 0 ? (
+                    <div className="text-center py-12">
+                      <p className="text-muted-foreground mb-4">No assets yet. Start your first investment!</p>
+                      <Button onClick={() => navigate("/invest")}>Browse Packages</Button>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-sm ${
-                      investment.status === "active" 
-                        ? "bg-primary/10 text-primary" 
-                        : "bg-muted text-muted-foreground"
-                    }`}>
-                      {investment.status}
-                    </span>
-                  </div>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-4">
+                      {assets.map((asset) => {
+                        const startDate = new Date(asset.start_date);
+                        const endDate = new Date(asset.expected_end_date);
+                        const now = new Date();
+                        const totalDuration = endDate.getTime() - startDate.getTime();
+                        const elapsed = now.getTime() - startDate.getTime();
+                        const progress = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+
+                        return (
+                          <AssetCard
+                            key={asset.id}
+                            tagId={asset.unique_tag_id}
+                            assetName={asset.asset_name}
+                            assetType={asset.asset_type}
+                            purchaseAmount={asset.purchase_amount}
+                            purchaseDate={asset.purchase_date}
+                            startDate={asset.start_date}
+                            expectedEndDate={asset.expected_end_date}
+                            currentPhase={asset.current_phase}
+                            status={asset.status}
+                            thumbnailUrl={asset.thumbnail_url}
+                            progress={progress}
+                          />
+                        );
+                      })}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Right Column: Actions */}
+            <div className="space-y-6">
+              {/* ROI Progress */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>ROI Progress</CardTitle>
+                  <CardDescription>Expected returns timeline</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Investment Amount</p>
-                        <p className="text-xl font-bold">${Number(investment.amount).toLocaleString()}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Expected ROI</p>
-                        <p className="text-xl font-bold text-primary">
-                          {investment.investment_packages.expected_roi_min}%-{investment.investment_packages.expected_roi_max}%
-                        </p>
-                      </div>
-                    </div>
                     <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="text-muted-foreground">Maturity Date</span>
-                        <span>{new Date(investment.maturity_date).toLocaleDateString()}</span>
+                      <div className="flex items-center justify-between text-sm mb-2">
+                        <span>Overall Progress</span>
+                        <span className="font-medium">65%</span>
                       </div>
-                      <Progress 
-                        value={
-                          ((new Date().getTime() - new Date(investment.start_date).getTime()) / 
-                          (new Date(investment.maturity_date).getTime() - new Date(investment.start_date).getTime())) * 100
-                        } 
-                      />
+                      <Progress value={65} className="h-3" />
                     </div>
+                    <div className="bg-primary/10 p-4 rounded-lg">
+                      <p className="text-sm text-muted-foreground">Expected ROI</p>
+                      <p className="text-2xl font-bold text-primary">GHS {pendingROI.toLocaleString()}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Due: Mar 12, 2026</p>
+                    </div>
+                    <Button variant="outline" className="w-full" disabled>
+                      Withdraw Returns
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
-            ))
-          )}
+
+              {/* Quick Actions */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Button variant="outline" className="w-full justify-start">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    Book Farm Visit
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start">
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Raise Enquiry
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Legacy Investments */}
+              {investments.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Legacy Investments</CardTitle>
+                    <CardDescription>Previous investment records</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3 text-sm">
+                      {investments.slice(0, 3).map((inv) => (
+                        <div key={inv.id} className="flex items-center justify-between">
+                          <span className="text-muted-foreground truncate">
+                            {inv.investment_packages.name}
+                          </span>
+                          <span className="font-medium">GHS {Number(inv.amount).toLocaleString()}</span>
+                        </div>
+                      ))}
+                      {investments.length > 3 && (
+                        <Button variant="link" className="w-full text-xs p-0 h-auto">
+                          View all {investments.length} investments
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
+      <Footer />
     </div>
   );
-}
+};
+
+export default ClientDashboard;
