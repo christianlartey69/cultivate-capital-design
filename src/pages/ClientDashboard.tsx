@@ -10,6 +10,7 @@ import DashboardStats from "@/components/dashboard/DashboardStats";
 import AssetCard from "@/components/dashboard/AssetCard";
 import { Calendar, MessageSquare, Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import ChatBot from "@/components/ChatBot";
 
 interface Investment {
   id: string;
@@ -262,6 +263,17 @@ const ClientDashboard = () => {
         </div>
       </main>
       <Footer />
+      
+      {/* AI Support Chatbot */}
+      <ChatBot
+        type="client"
+        userContext={{
+          name: user?.email || "Investor",
+          totalInvested,
+          activeAssets,
+          pendingROI,
+        }}
+      />
     </div>
   );
 };

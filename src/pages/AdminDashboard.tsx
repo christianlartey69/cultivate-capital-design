@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Package, TrendingUp, Users, DollarSign } from "lucide-react";
+import ChatBot from "@/components/ChatBot";
 
 interface Investment {
   id: string;
@@ -134,6 +135,7 @@ export default function AdminDashboard() {
 
   const totalInvestments = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
   const activeInvestments = investments.filter(inv => inv.status === "active").length;
+  const totalUsers = new Set(investments.map(i => i.profiles.email)).size;
 
   if (loading || isLoading || !isAdmin) {
     return (
@@ -253,6 +255,17 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
       </div>
+      
+      {/* AI Admin Assistant */}
+      <ChatBot
+        type="admin"
+        adminContext={{
+          totalInvestments,
+          activeInvestments,
+          totalUsers,
+          pendingVerifications: 0, // TODO: fetch from profiles where verification_status = 'pending'
+        }}
+      />
     </div>
   );
 }

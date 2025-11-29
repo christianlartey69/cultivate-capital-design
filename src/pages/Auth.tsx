@@ -83,11 +83,21 @@ const Auth = () => {
       }
 
       if (data.session) {
+        // Check user role and redirect accordingly
+        const { data: roleData } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", data.user.id)
+          .single();
+
+        const isAdmin = roleData?.role === "admin";
+
         toast({
           title: "Welcome back!",
           description: "You've successfully logged in.",
         });
-        navigate("/");
+        
+        navigate(isAdmin ? "/admin" : "/dashboard");
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -163,9 +173,11 @@ const Auth = () => {
 
         toast({
           title: "Account created!",
-          description: "Welcome to CES Consult Agriculture Investment.",
+          description: "Welcome to CES Consult Agriculture Investment. Complete your profile next.",
         });
-        navigate("/");
+        
+        // New users are always clients, redirect to onboarding
+        navigate("/onboarding");
       } else {
         toast({
           title: "Check your email",
