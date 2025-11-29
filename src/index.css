@@ -8,63 +8,48 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* CES Consult Agriculture Investment Platform Design System */
-    /* Background & Surfaces - Soft Cream base for vintage paper feel */
-    --background: 42 35% 95%;
-    --foreground: 24 25% 18%;
-
-    /* Cards with subtle warmth */
-    --card: 40 40% 97%;
-    --card-foreground: 24 25% 18%;
-
-    /* Popovers */
-    --popover: 40 40% 97%;
-    --popover-foreground: 24 25% 18%;
-
-    /* Primary - Earth Green for trust, growth, sustainability */
-    --primary: 100 22% 34%;
-    --primary-foreground: 42 35% 95%;
-
-    /* Secondary - Harvest Gold for prosperity and warmth */
-    --secondary: 41 52% 60%;
-    --secondary-foreground: 24 25% 18%;
-
-    /* Muted - Soft Sage for subtle backgrounds */
-    --muted: 100 14% 68%;
-    --muted-foreground: 100 10% 35%;
-
-    /* Accent - Rust Orange for call-to-action and energy */
-    --accent: 19 55% 47%;
-    --accent-foreground: 42 35% 95%;
-
-    /* Destructive - Brick Red for warnings */
-    --destructive: 3 41% 51%;
-    --destructive-foreground: 42 35% 95%;
-
-    /* Success - Mint Green for growth and positive states */
-    --success: 118 35% 67%;
-    --success-foreground: 24 25% 18%;
-
-    /* Warning - Amber Grain */
-    --warning: 44 84% 69%;
-    --warning-foreground: 24 25% 18%;
-
-    /* Info - Cool Blue for informational states */
-    --info: 200 37% 53%;
-    --info-foreground: 42 35% 95%;
-
-    /* Borders & Inputs - Muted Sage tones */
-    --border: 100 14% 82%;
-    --input: 100 14% 88%;
-    --ring: 100 22% 34%;
-
-    /* Deep Soil Brown for depth */
-    --soil: 24 25% 18%;
+    /* Earth-toned agricultural palette */
+    --background: 120 10% 97%;
+    --foreground: 0 0% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 4%;
     
-    /* Sky Blue for secondary accents */
-    --sky: 200 42% 65%;
-
-    --radius: 0.375rem;
+    /* Brand colors - green earth tones */
+    --primary: 145 65% 29%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 140 35% 65%;
+    
+    /* Earth brown for accents */
+    --earth-brown: 25 40% 40%;
+    --earth-brown-foreground: 0 0% 100%;
+    
+    /* Gold accent for highlights */
+    --gold: 45 85% 47%;
+    --gold-foreground: 0 0% 4%;
+    
+    /* Sky blue for secondary actions */
+    --sky: 200 68% 65%;
+    --sky-foreground: 0 0% 4%;
+    
+    --secondary: 140 25% 90%;
+    --secondary-foreground: 145 65% 20%;
+    --muted: 120 10% 96%;
+    --muted-foreground: 0 0% 42%;
+    --accent: 140 35% 85%;
+    --accent-foreground: 145 65% 20%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 145 60% 45%;
+    --warning: 45 90% 60%;
+    --info: 200 70% 50%;
+    
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 145 65% 29%;
+    --radius: 0.5rem;
 
     /* Vintage-line border effect */
     --vintage-border: 1px solid hsl(var(--border));
@@ -85,51 +70,51 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 24 25% 12%;
-    --foreground: 42 35% 95%;
-
-    --card: 24 25% 15%;
-    --card-foreground: 42 35% 95%;
-
-    --popover: 24 25% 15%;
-    --popover-foreground: 42 35% 95%;
-
-    --primary: 100 22% 45%;
-    --primary-foreground: 42 35% 95%;
-
-    --secondary: 41 52% 50%;
-    --secondary-foreground: 24 25% 12%;
-
-    --muted: 100 10% 25%;
-    --muted-foreground: 100 14% 68%;
-
-    --accent: 19 55% 57%;
-    --accent-foreground: 42 35% 95%;
-
-    --destructive: 3 41% 41%;
-    --destructive-foreground: 42 35% 95%;
-
-    --success: 118 35% 57%;
-    --success-foreground: 24 25% 12%;
-
-    --warning: 44 84% 59%;
-    --warning-foreground: 24 25% 12%;
-
-    --info: 200 37% 63%;
-    --info-foreground: 24 25% 12%;
-
-    --border: 100 10% 25%;
-    --input: 100 10% 22%;
-    --ring: 100 22% 45%;
-
-    --sidebar-background: 24 25% 12%;
-    --sidebar-foreground: 42 35% 95%;
-    --sidebar-primary: 41 52% 60%;
-    --sidebar-primary-foreground: 24 25% 12%;
-    --sidebar-accent: 100 22% 28%;
-    --sidebar-accent-foreground: 42 35% 95%;
-    --sidebar-border: 100 10% 25%;
-    --sidebar-ring: 41 52% 60%;
+    --background: 145 25% 10%;
+    --foreground: 0 0% 96%;
+    --card: 145 20% 12%;
+    --card-foreground: 0 0% 96%;
+    --popover: 145 20% 14%;
+    --popover-foreground: 0 0% 96%;
+    
+    --primary: 145 55% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 140 35% 55%;
+    
+    --earth-brown: 25 35% 45%;
+    --earth-brown-foreground: 0 0% 100%;
+    
+    --gold: 45 80% 55%;
+    --gold-foreground: 0 0% 4%;
+    
+    --sky: 200 60% 60%;
+    --sky-foreground: 0 0% 4%;
+    
+    --secondary: 140 20% 25%;
+    --secondary-foreground: 140 35% 85%;
+    --muted: 145 20% 20%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 145 30% 30%;
+    --accent-foreground: 140 35% 85%;
+    
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 145 60% 45%;
+    --warning: 45 90% 60%;
+    --info: 200 70% 50%;
+    
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --ring: 145 55% 45%;
+    
+    --sidebar-background: 145 20% 10%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 145 55% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 145 20% 20%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 145 55% 45%;
   }
 }
 

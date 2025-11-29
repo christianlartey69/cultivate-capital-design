@@ -8,6 +8,7 @@ import Auth from "./pages/Auth";
 import ClientDashboard from "./pages/ClientDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import InvestmentForm from "./pages/InvestmentForm";
+import InvestorOnboarding from "./pages/InvestorOnboarding";
 import About from "./pages/About";
 import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/dashboard" element={<ClientDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/invest" element={<InvestmentForm />} />
+          <Route path="/onboarding" element={<InvestorOnboarding />} />
           <Route path="/about" element={<About />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/terms" element={<Terms />} />

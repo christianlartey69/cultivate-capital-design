@@ -14,6 +14,227 @@ export type Database = {
   }
   public: {
     Tables: {
+      asset_media: {
+        Row: {
+          asset_id: string
+          created_at: string | null
+          description: string | null
+          id: string
+          media_type: string
+          media_url: string
+          title: string | null
+          uploaded_at: string | null
+        }
+        Insert: {
+          asset_id: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          media_type: string
+          media_url: string
+          title?: string | null
+          uploaded_at?: string | null
+        }
+        Update: {
+          asset_id?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          media_type?: string
+          media_url?: string
+          title?: string | null
+          uploaded_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "asset_media_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assets: {
+        Row: {
+          asset_name: string
+          asset_type: string
+          created_at: string | null
+          current_phase: string | null
+          expected_end_date: string
+          farm_location: string | null
+          id: string
+          investor_id: string
+          package_id: string
+          purchase_amount: number
+          purchase_date: string | null
+          start_date: string | null
+          status: string | null
+          thumbnail_url: string | null
+          unique_tag_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          asset_name: string
+          asset_type: string
+          created_at?: string | null
+          current_phase?: string | null
+          expected_end_date: string
+          farm_location?: string | null
+          id?: string
+          investor_id: string
+          package_id: string
+          purchase_amount: number
+          purchase_date?: string | null
+          start_date?: string | null
+          status?: string | null
+          thumbnail_url?: string | null
+          unique_tag_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          asset_name?: string
+          asset_type?: string
+          created_at?: string | null
+          current_phase?: string | null
+          expected_end_date?: string
+          farm_location?: string | null
+          id?: string
+          investor_id?: string
+          package_id?: string
+          purchase_amount?: number
+          purchase_date?: string | null
+          start_date?: string | null
+          status?: string | null
+          thumbnail_url?: string | null
+          unique_tag_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assets_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assets_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "investment_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enquiries: {
+        Row: {
+          asset_id: string | null
+          created_at: string | null
+          id: string
+          investor_id: string
+          message: string
+          priority: string | null
+          status: string | null
+          subject: string
+          updated_at: string | null
+        }
+        Insert: {
+          asset_id?: string | null
+          created_at?: string | null
+          id?: string
+          investor_id: string
+          message: string
+          priority?: string | null
+          status?: string | null
+          subject: string
+          updated_at?: string | null
+        }
+        Update: {
+          asset_id?: string | null
+          created_at?: string | null
+          id?: string
+          investor_id?: string
+          message?: string
+          priority?: string | null
+          status?: string | null
+          subject?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enquiries_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enquiries_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      farm_visits: {
+        Row: {
+          asset_id: string | null
+          confirmation_sent: boolean | null
+          created_at: string | null
+          id: string
+          investor_id: string
+          number_of_guests: number | null
+          special_requests: string | null
+          status: string | null
+          updated_at: string | null
+          visit_date: string
+          visit_time: string
+        }
+        Insert: {
+          asset_id?: string | null
+          confirmation_sent?: boolean | null
+          created_at?: string | null
+          id?: string
+          investor_id: string
+          number_of_guests?: number | null
+          special_requests?: string | null
+          status?: string | null
+          updated_at?: string | null
+          visit_date: string
+          visit_time: string
+        }
+        Update: {
+          asset_id?: string | null
+          confirmation_sent?: boolean | null
+          created_at?: string | null
+          id?: string
+          investor_id?: string
+          number_of_guests?: number | null
+          special_requests?: string | null
+          status?: string | null
+          updated_at?: string | null
+          visit_date?: string
+          visit_time?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "farm_visits_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "farm_visits_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       investment_packages: {
         Row: {
           business_type: string
@@ -156,28 +377,115 @@ export type Database = {
       }
       profiles: {
         Row: {
+          alternate_payout_method: string | null
+          bank_account_name: string | null
+          bank_account_number: string | null
+          bank_name: string | null
+          billing_address: string | null
+          city: string | null
           created_at: string
+          date_of_birth: string | null
           email: string
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          first_name: string | null
           full_name: string | null
+          gender: string | null
           id: string
+          id_number: string | null
+          id_photo_back_url: string | null
+          id_photo_front_url: string | null
+          id_type: string | null
+          last_name: string | null
+          marketing_consent: boolean | null
+          middle_name: string | null
+          mobile_money_number: string | null
+          mobile_money_provider: string | null
+          onboarding_completed: boolean | null
           phone: string | null
+          postal_code: string | null
+          preferred_contact_method: string | null
+          primary_phone: string | null
+          profile_picture_url: string | null
+          region: string | null
+          residential_address: string | null
+          selfie_with_id_url: string | null
           updated_at: string
+          verification_status: string | null
         }
         Insert: {
+          alternate_payout_method?: string | null
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
+          billing_address?: string | null
+          city?: string | null
           created_at?: string
+          date_of_birth?: string | null
           email: string
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          first_name?: string | null
           full_name?: string | null
+          gender?: string | null
           id: string
+          id_number?: string | null
+          id_photo_back_url?: string | null
+          id_photo_front_url?: string | null
+          id_type?: string | null
+          last_name?: string | null
+          marketing_consent?: boolean | null
+          middle_name?: string | null
+          mobile_money_number?: string | null
+          mobile_money_provider?: string | null
+          onboarding_completed?: boolean | null
           phone?: string | null
+          postal_code?: string | null
+          preferred_contact_method?: string | null
+          primary_phone?: string | null
+          profile_picture_url?: string | null
+          region?: string | null
+          residential_address?: string | null
+          selfie_with_id_url?: string | null
           updated_at?: string
+          verification_status?: string | null
         }
         Update: {
+          alternate_payout_method?: string | null
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
+          billing_address?: string | null
+          city?: string | null
           created_at?: string
+          date_of_birth?: string | null
           email?: string
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          first_name?: string | null
           full_name?: string | null
+          gender?: string | null
           id?: string
+          id_number?: string | null
+          id_photo_back_url?: string | null
+          id_photo_front_url?: string | null
+          id_type?: string | null
+          last_name?: string | null
+          marketing_consent?: boolean | null
+          middle_name?: string | null
+          mobile_money_number?: string | null
+          mobile_money_provider?: string | null
+          onboarding_completed?: boolean | null
           phone?: string | null
+          postal_code?: string | null
+          preferred_contact_method?: string | null
+          primary_phone?: string | null
+          profile_picture_url?: string | null
+          region?: string | null
+          residential_address?: string | null
+          selfie_with_id_url?: string | null
           updated_at?: string
+          verification_status?: string | null
         }
         Relationships: []
       }
