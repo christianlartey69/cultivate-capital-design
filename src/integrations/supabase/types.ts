@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string | null
+          reference_id: string | null
+          reference_type: string | null
+          title: string
+          type: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          title: string
+          type: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          title?: string
+          type?: string
+        }
+        Relationships: []
+      }
       asset_media: {
         Row: {
           asset_id: string
@@ -178,6 +211,53 @@ export type Database = {
           },
         ]
       }
+      farm_media: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          farm_id: string
+          id: string
+          is_progress_update: boolean | null
+          media_type: string
+          media_url: string
+          release_date: string | null
+          title: string | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          farm_id: string
+          id?: string
+          is_progress_update?: boolean | null
+          media_type: string
+          media_url: string
+          release_date?: string | null
+          title?: string | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          farm_id?: string
+          id?: string
+          is_progress_update?: boolean | null
+          media_type?: string
+          media_url?: string
+          release_date?: string | null
+          title?: string | null
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "farm_media_farm_id_fkey"
+            columns: ["farm_id"]
+            isOneToOne: false
+            referencedRelation: "farms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       farm_visits: {
         Row: {
           asset_id: string | null
@@ -231,6 +311,158 @@ export type Database = {
             columns: ["investor_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      farmers: {
+        Row: {
+          admin_approved: boolean | null
+          business_name: string | null
+          business_registration_number: string | null
+          certification_expires_at: string | null
+          certification_issued_at: string | null
+          certification_number: string | null
+          compliance_verified: boolean | null
+          created_at: string | null
+          farm_verified: boolean | null
+          id: string
+          identity_verified: boolean | null
+          is_certified: boolean | null
+          updated_at: string | null
+          user_id: string
+          verification_notes: string | null
+          verification_status: string | null
+          verified_at: string | null
+          verified_by: string | null
+          years_of_experience: number | null
+        }
+        Insert: {
+          admin_approved?: boolean | null
+          business_name?: string | null
+          business_registration_number?: string | null
+          certification_expires_at?: string | null
+          certification_issued_at?: string | null
+          certification_number?: string | null
+          compliance_verified?: boolean | null
+          created_at?: string | null
+          farm_verified?: boolean | null
+          id?: string
+          identity_verified?: boolean | null
+          is_certified?: boolean | null
+          updated_at?: string | null
+          user_id: string
+          verification_notes?: string | null
+          verification_status?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+          years_of_experience?: number | null
+        }
+        Update: {
+          admin_approved?: boolean | null
+          business_name?: string | null
+          business_registration_number?: string | null
+          certification_expires_at?: string | null
+          certification_issued_at?: string | null
+          certification_number?: string | null
+          compliance_verified?: boolean | null
+          created_at?: string | null
+          farm_verified?: boolean | null
+          id?: string
+          identity_verified?: boolean | null
+          is_certified?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+          verification_notes?: string | null
+          verification_status?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+          years_of_experience?: number | null
+        }
+        Relationships: []
+      }
+      farms: {
+        Row: {
+          certification_number: string | null
+          created_at: string | null
+          farm_name: string
+          farm_size: number | null
+          farm_size_unit: string | null
+          farm_type: string
+          farmer_id: string
+          gps_latitude: number | null
+          gps_longitude: number | null
+          id: string
+          irrigation_type: string | null
+          is_certified: boolean | null
+          is_verified: boolean | null
+          lease_document_url: string | null
+          livestock_types: string[] | null
+          location_address: string | null
+          location_city: string | null
+          location_region: string | null
+          main_crops: string[] | null
+          ownership_document_url: string | null
+          soil_type: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          certification_number?: string | null
+          created_at?: string | null
+          farm_name: string
+          farm_size?: number | null
+          farm_size_unit?: string | null
+          farm_type: string
+          farmer_id: string
+          gps_latitude?: number | null
+          gps_longitude?: number | null
+          id?: string
+          irrigation_type?: string | null
+          is_certified?: boolean | null
+          is_verified?: boolean | null
+          lease_document_url?: string | null
+          livestock_types?: string[] | null
+          location_address?: string | null
+          location_city?: string | null
+          location_region?: string | null
+          main_crops?: string[] | null
+          ownership_document_url?: string | null
+          soil_type?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          certification_number?: string | null
+          created_at?: string | null
+          farm_name?: string
+          farm_size?: number | null
+          farm_size_unit?: string | null
+          farm_type?: string
+          farmer_id?: string
+          gps_latitude?: number | null
+          gps_longitude?: number | null
+          id?: string
+          irrigation_type?: string | null
+          is_certified?: boolean | null
+          is_verified?: boolean | null
+          lease_document_url?: string | null
+          livestock_types?: string[] | null
+          location_address?: string | null
+          location_city?: string | null
+          location_region?: string | null
+          main_crops?: string[] | null
+          ownership_document_url?: string | null
+          soil_type?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "farms_farmer_id_fkey"
+            columns: ["farmer_id"]
+            isOneToOne: false
+            referencedRelation: "farmers"
             referencedColumns: ["id"]
           },
         ]
@@ -507,6 +739,90 @@ export type Database = {
         }
         Relationships: []
       }
+      withdrawal_requests: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          asset_id: string | null
+          bank_account_name: string | null
+          bank_account_number: string | null
+          bank_name: string | null
+          created_at: string | null
+          currency: string | null
+          id: string
+          investment_id: string | null
+          momo_number: string | null
+          momo_provider: string | null
+          paid_at: string | null
+          payout_method: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+          transaction_reference: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount: number
+          asset_id?: string | null
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          investment_id?: string | null
+          momo_number?: string | null
+          momo_provider?: string | null
+          paid_at?: string | null
+          payout_method: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          transaction_reference?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          asset_id?: string | null
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          investment_id?: string | null
+          momo_number?: string | null
+          momo_provider?: string | null
+          paid_at?: string | null
+          payout_method?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          transaction_reference?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "withdrawal_requests_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "withdrawal_requests_investment_id_fkey"
+            columns: ["investment_id"]
+            isOneToOne: false
+            referencedRelation: "investments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -521,7 +837,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "client"
+      app_role: "admin" | "client" | "farmer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -649,7 +965,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "client"],
+      app_role: ["admin", "client", "farmer"],
     },
   },
 } as const
