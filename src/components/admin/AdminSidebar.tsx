@@ -24,8 +24,6 @@ const navItems = [
   { to: "/admin/visits", icon: Calendar, label: "Farm Visits" },
   { to: "/admin/withdrawals", icon: Wallet, label: "Withdrawals" },
   { to: "/admin/analytics", icon: BarChart3, label: "Analytics" },
-  { to: "/admin/notifications", icon: Bell, label: "Notifications" },
-  { to: "/admin/settings", icon: Settings, label: "Settings" },
 ];
 
 export function AdminSidebar() {

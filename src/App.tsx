@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import AdminLogin from "./pages/auth/AdminLogin";
+import FarmerLogin from "./pages/auth/FarmerLogin";
+import InvestorLogin from "./pages/auth/InvestorLogin";
 import ClientDashboard from "./pages/ClientDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import InvestmentForm from "./pages/InvestmentForm";
@@ -21,6 +24,8 @@ import NotFound from "./pages/NotFound";
 // Admin pages
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminFarmers from "./pages/admin/AdminFarmers";
+import AdminPackages from "./pages/admin/AdminPackages";
+import AdminAssets from "./pages/admin/AdminAssets";
 import AdminWithdrawals from "./pages/admin/AdminWithdrawals";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminMedia from "./pages/admin/AdminMedia";
@@ -38,10 +43,15 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Auth />} />
           <Route path="/register" element={<Auth />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/farmer/login" element={<FarmerLogin />} />
+          <Route path="/investor/login" element={<InvestorLogin />} />
           <Route path="/dashboard" element={<ClientDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/farmers" element={<AdminFarmers />} />
+          <Route path="/admin/packages" element={<AdminPackages />} />
+          <Route path="/admin/assets" element={<AdminAssets />} />
           <Route path="/admin/withdrawals" element={<AdminWithdrawals />} />
           <Route path="/admin/analytics" element={<AdminAnalytics />} />
           <Route path="/admin/media" element={<AdminMedia />} />
