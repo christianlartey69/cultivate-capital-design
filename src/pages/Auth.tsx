@@ -87,17 +87,24 @@ const Auth = () => {
         const { data: roleData } = await supabase
           .from("user_roles")
           .select("role")
-          .eq("user_id", data.user.id)
-          .single();
+          .eq("user_id", data.user.id);
 
-        const isAdmin = roleData?.role === "admin";
+        const roles = roleData?.map(r => r.role) || [];
+        const isAdmin = roles.includes("admin");
+        const isFarmer = roles.includes("farmer");
 
         toast({
           title: "Welcome back!",
           description: "You've successfully logged in.",
         });
         
-        navigate(isAdmin ? "/admin" : "/dashboard");
+        if (isAdmin) {
+          navigate("/admin");
+        } else if (isFarmer) {
+          navigate("/farmer-dashboard");
+        } else {
+          navigate("/dashboard");
+        }
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
