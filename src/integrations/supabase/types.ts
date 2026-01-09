@@ -566,6 +566,104 @@ export type Database = {
           },
         ]
       }
+      payments: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          bank_account_name: string | null
+          bank_account_number: string | null
+          bank_name: string | null
+          created_at: string
+          currency: string
+          farm_id: string | null
+          farmer_id: string | null
+          id: string
+          investor_id: string
+          method: string
+          momo_number: string | null
+          momo_provider: string | null
+          package_id: string | null
+          status: string
+          transaction_reference: string | null
+          updated_at: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount: number
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
+          created_at?: string
+          currency?: string
+          farm_id?: string | null
+          farmer_id?: string | null
+          id?: string
+          investor_id: string
+          method: string
+          momo_number?: string | null
+          momo_provider?: string | null
+          package_id?: string | null
+          status?: string
+          transaction_reference?: string | null
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
+          created_at?: string
+          currency?: string
+          farm_id?: string | null
+          farmer_id?: string | null
+          id?: string
+          investor_id?: string
+          method?: string
+          momo_number?: string | null
+          momo_provider?: string | null
+          package_id?: string | null
+          status?: string
+          transaction_reference?: string | null
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_farm_id_fkey"
+            columns: ["farm_id"]
+            isOneToOne: false
+            referencedRelation: "farms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_farmer_id_fkey"
+            columns: ["farmer_id"]
+            isOneToOne: false
+            referencedRelation: "farmers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_investor_id_fkey"
+            columns: ["investor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "investment_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           content: string | null
