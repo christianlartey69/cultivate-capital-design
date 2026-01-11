@@ -20,6 +20,9 @@ import Terms from "./pages/Terms";
 import Testimonials from "./pages/Testimonials";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import PackageSelection from "./pages/PackageSelection";
+import PaymentSubmission from "./pages/PaymentSubmission";
+import FarmVisitBooking from "./pages/FarmVisitBooking";
 
 // Admin pages
 import AdminUsers from "./pages/admin/AdminUsers";
@@ -30,6 +33,7 @@ import AdminWithdrawals from "./pages/admin/AdminWithdrawals";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminMedia from "./pages/admin/AdminMedia";
 import AdminVisits from "./pages/admin/AdminVisits";
+import AdminPayments from "./pages/admin/AdminPayments";
 
 const queryClient = new QueryClient();
 
@@ -56,7 +60,11 @@ const App = () => (
           <Route path="/admin/analytics" element={<AdminAnalytics />} />
           <Route path="/admin/media" element={<AdminMedia />} />
           <Route path="/admin/visits" element={<AdminVisits />} />
+          <Route path="/admin/payments" element={<AdminPayments />} />
           <Route path="/invest" element={<InvestmentForm />} />
+          <Route path="/packages" element={<PackageSelection />} />
+          <Route path="/payment" element={<PaymentSubmission />} />
+          <Route path="/book-visit" element={<FarmVisitBooking />} />
           <Route path="/onboarding" element={<InvestorOnboarding />} />
           <Route path="/farmer-onboarding" element={<FarmerOnboarding />} />
           <Route path="/farmer-dashboard" element={<FarmerDashboard />} />
