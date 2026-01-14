@@ -7,8 +7,7 @@ import {
   Video, 
   Calendar,
   Wallet,
-  Bell,
-  Settings,
+  CreditCard,
   BarChart3,
   Shield
 } from "lucide-react";
@@ -20,6 +19,7 @@ const navItems = [
   { to: "/admin/farmers", icon: Tractor, label: "Farmers" },
   { to: "/admin/packages", icon: Package, label: "Packages" },
   { to: "/admin/assets", icon: Shield, label: "Assets" },
+  { to: "/admin/payments", icon: CreditCard, label: "Payments" },
   { to: "/admin/media", icon: Video, label: "Media" },
   { to: "/admin/visits", icon: Calendar, label: "Farm Visits" },
   { to: "/admin/withdrawals", icon: Wallet, label: "Withdrawals" },

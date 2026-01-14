@@ -221,7 +221,11 @@ const ClientDashboard = () => {
                   <CardTitle>Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => navigate("/book-visit")}
+                  >
                     <Calendar className="w-4 h-4 mr-2" />
                     Book Farm Visit
                   </Button>

@@ -2,22 +2,30 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useToast } from "@/hooks/use-toast";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { 
   Loader2, 
   TrendingUp, 
   Clock, 
   Leaf, 
-  PiggyBank, 
+  PiggyBank,
   ArrowRight,
   CheckCircle2,
   Calendar,
-  DollarSign
+  DollarSign,
+  ChevronDown,
+  ChevronUp,
+  Users,
+  Shield,
+  Eye,
+  Coins,
+  MapPin
 } from "lucide-react";
 
 interface Package {
@@ -32,13 +40,16 @@ interface Package {
   image_url: string | null;
 }
 
-// Package-specific details
+// Package-specific details with updated names and ROI
 const packageDetails: Record<string, {
   icon: React.ReactNode;
   features: string[];
   timeline: string;
   roiInfo: string;
   imageUrl: string;
+  farmingCycle: string;
+  location: string;
+  termsConditions: string[];
 }> = {
   "maize": {
     icon: <Leaf className="w-8 h-8" />,
@@ -51,6 +62,14 @@ const packageDetails: Record<string, {
     timeline: "ROI paid within 4-5 months after harvest",
     roiInfo: "Income from bulk sales to feed mills, poultry farms, and local markets",
     imageUrl: "https://images.unsplash.com/photo-1601593768799-76e3be0fad5f?w=600&h=400&fit=crop",
+    farmingCycle: "90-120 days from planting to harvest",
+    location: "Kade, Eastern Region",
+    termsConditions: [
+      "Minimum investment period of 4 months",
+      "ROI calculated after harvest and sales completion",
+      "Early withdrawal attracts 5% penalty",
+      "Quarterly progress reports provided",
+    ],
   },
   "pig": {
     icon: <PiggyBank className="w-8 h-8" />,
@@ -63,8 +82,65 @@ const packageDetails: Record<string, {
     timeline: "Returns released within 6-7 months",
     roiInfo: "Sales to abattoirs, pork processors, and open market buyers",
     imageUrl: "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=600&h=400&fit=crop",
+    farmingCycle: "5-6 months to market-ready weight",
+    location: "Anum, Eastern Region",
+    termsConditions: [
+      "Minimum investment period of 6 months",
+      "ROI calculated at market-ready weight",
+      "Early withdrawal attracts 7% penalty",
+      "Monthly health and growth reports provided",
+    ],
+  },
+  "goat": {
+    icon: <Leaf className="w-8 h-8" />,
+    features: [
+      "Lower maintenance requirements",
+      "Growing market demand",
+      "Disease resistant breeds",
+      "Suitable for various terrains",
+    ],
+    timeline: "Returns released within 8-10 months",
+    roiInfo: "Sales during festive seasons and to local markets",
+    imageUrl: "https://images.unsplash.com/photo-1524024973431-2ad916746881?w=600&h=400&fit=crop",
+    farmingCycle: "8-10 months breeding and fattening cycle",
+    location: "Various Locations, Ghana",
+    termsConditions: [
+      "Minimum investment period of 8 months",
+      "ROI calculated at optimal market weight",
+      "Early withdrawal attracts 6% penalty",
+      "Bi-monthly progress reports provided",
+    ],
   },
 };
+
+const cesExplanation = [
+  {
+    icon: <Users className="w-5 h-5" />,
+    title: "Certified Partner Farmers",
+    description: "CES works exclusively with certified and vetted farmers who meet our strict quality and ethical standards.",
+  },
+  {
+    icon: <Shield className="w-5 h-5" />,
+    title: "Direct Farmer Linkage",
+    description: "Each investor is linked to a specific farmer, ensuring transparency and accountability in how your funds are utilized.",
+  },
+  {
+    icon: <Coins className="w-5 h-5" />,
+    title: "Direct Farm Funding",
+    description: "Your investment funds are used directly for farming activities including seeds, feed, equipment, and labor.",
+  },
+  {
+    icon: <Eye className="w-5 h-5" />,
+    title: "Active Monitoring",
+    description: "CES monitors each farmer to ensure strict adherence to farming timelines and production targets.",
+  },
+];
+
+const returnStructure = [
+  { recipient: "Investor", description: "Principal + ROI (10-18%)" },
+  { recipient: "Farmer", description: "Agreed portion per contract" },
+  { recipient: "CES", description: "Management margin" },
+];
 
 export default function PackageSelection() {
   const { user, loading: authLoading } = useAuth();
@@ -72,6 +148,13 @@ export default function PackageSelection() {
   const { toast } = useToast();
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openPackages, setOpenPackages] = useState<string[]>([]);
+
+  const togglePackage = (id: string) => {
+    setOpenPackages(prev => 
+      prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
+    );
+  };
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -114,8 +197,11 @@ export default function PackageSelection() {
     if (type.includes("maize") || type.includes("crop")) {
       return packageDetails.maize;
     }
-    if (type.includes("pig") || type.includes("livestock")) {
+    if (type.includes("pig") || type.includes("livestock") || type.includes("pork")) {
       return packageDetails.pig;
+    }
+    if (type.includes("goat")) {
+      return packageDetails.goat;
     }
     return packageDetails.maize; // Default
   };
@@ -151,7 +237,7 @@ export default function PackageSelection() {
               Choose Your Investment Package
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Invest in sustainable agriculture and earn competitive returns. All investments are denominated in Ghana Cedis (GHS).
+              Invest in sustainable agriculture and earn competitive returns between 10-18%. All investments are denominated in Ghana Cedis (GHS).
             </p>
           </div>
         </section>
@@ -159,9 +245,11 @@ export default function PackageSelection() {
         {/* Packages Grid */}
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {packages.map((pkg) => {
                 const details = getPackageDetails(pkg);
+                const isOpen = openPackages.includes(pkg.id);
+                
                 return (
                   <Card 
                     key={pkg.id} 
@@ -183,7 +271,10 @@ export default function PackageSelection() {
                           <h3 className="font-heading font-bold text-xl text-foreground">
                             {pkg.name}
                           </h3>
-                          <p className="text-sm text-muted-foreground">{pkg.business_type}</p>
+                          <p className="text-sm text-muted-foreground flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            {details.location}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -196,18 +287,28 @@ export default function PackageSelection() {
                         <div className="text-center p-3 bg-muted/50 rounded-lg">
                           <DollarSign className="w-5 h-5 mx-auto text-primary mb-1" />
                           <p className="text-xs text-muted-foreground">Min. Investment</p>
-                          <p className="font-bold text-primary">GHS {pkg.min_investment.toLocaleString()}</p>
+                          <p className="font-bold text-primary text-sm">GHS {pkg.min_investment.toLocaleString()}</p>
                         </div>
                         <div className="text-center p-3 bg-gold/10 rounded-lg">
                           <TrendingUp className="w-5 h-5 mx-auto text-gold mb-1" />
                           <p className="text-xs text-muted-foreground">Expected ROI</p>
-                          <p className="font-bold text-gold">{pkg.expected_roi_min}%-{pkg.expected_roi_max}%</p>
+                          <p className="font-bold text-gold text-sm">{pkg.expected_roi_min}%-{pkg.expected_roi_max}%</p>
                         </div>
                         <div className="text-center p-3 bg-muted/50 rounded-lg">
                           <Calendar className="w-5 h-5 mx-auto text-sky mb-1" />
                           <p className="text-xs text-muted-foreground">Duration</p>
-                          <p className="font-bold">{pkg.duration_months} months</p>
+                          <p className="font-bold text-sm">{pkg.duration_months} months</p>
                         </div>
+                      </div>
+
+                      {/* Farming Cycle */}
+                      <div className="bg-primary/5 p-4 rounded-lg space-y-2">
+                        <div className="flex items-center gap-2 text-sm">
+                          <Clock className="w-4 h-4 text-primary" />
+                          <span className="font-medium">Farming Cycle</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{details.farmingCycle}</p>
+                        <p className="text-xs text-muted-foreground">{details.timeline}</p>
                       </div>
 
                       {/* Features */}
@@ -223,14 +324,62 @@ export default function PackageSelection() {
                         </ul>
                       </div>
 
-                      {/* ROI Info */}
-                      <div className="bg-primary/5 p-4 rounded-lg space-y-2">
-                        <div className="flex items-center gap-2 text-sm">
-                          <Clock className="w-4 h-4 text-primary" />
-                          <span className="font-medium">{details.timeline}</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground">{details.roiInfo}</p>
-                      </div>
+                      {/* View More Section */}
+                      <Collapsible open={isOpen} onOpenChange={() => togglePackage(pkg.id)}>
+                        <CollapsibleTrigger asChild>
+                          <Button variant="ghost" className="w-full text-sm">
+                            {isOpen ? (
+                              <>View Less <ChevronUp className="ml-2 h-4 w-4" /></>
+                            ) : (
+                              <>How CES Works <ChevronDown className="ml-2 h-4 w-4" /></>
+                            )}
+                          </Button>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="space-y-4 pt-4">
+                          <div className="space-y-3">
+                            {cesExplanation.map((item, idx) => (
+                              <div key={idx} className="flex items-start gap-3 text-sm">
+                                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 text-primary">
+                                  {item.icon}
+                                </div>
+                                <div>
+                                  <p className="font-medium text-foreground">{item.title}</p>
+                                  <p className="text-muted-foreground text-xs">{item.description}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          
+                          <div className="bg-primary/5 p-3 rounded-lg">
+                            <p className="font-medium text-sm mb-2">Return Structure</p>
+                            <div className="space-y-1">
+                              {returnStructure.map((item, idx) => (
+                                <div key={idx} className="flex justify-between text-xs">
+                                  <span className="text-muted-foreground">{item.recipient}:</span>
+                                  <span className="text-foreground">{item.description}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Terms & Conditions */}
+                          <div className="border-t pt-4">
+                            <p className="font-medium text-sm mb-2">Terms & Conditions</p>
+                            <ul className="space-y-1">
+                              {details.termsConditions.map((term, idx) => (
+                                <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
+                                  <span className="text-primary">•</span>
+                                  {term}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <p className="text-xs text-muted-foreground italic">
+                            CES prevents circumvention through continuous supervision, regular reporting, and scheduled farm visits.
+                          </p>
+                        </CollapsibleContent>
+                      </Collapsible>
 
                       {/* CTA Button */}
                       <Button 
@@ -238,7 +387,7 @@ export default function PackageSelection() {
                         size="lg"
                         onClick={() => handleSelectPackage(pkg.id)}
                       >
-                        Invest in {pkg.name}
+                        Invest Now
                         <ArrowRight className="w-5 h-5 ml-2" />
                       </Button>
                     </CardContent>
@@ -272,9 +421,9 @@ export default function PackageSelection() {
                 <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <TrendingUp className="w-8 h-8 text-gold" />
                 </div>
-                <h3 className="font-heading font-bold mb-2">Guaranteed Returns</h3>
+                <h3 className="font-heading font-bold mb-2">Competitive Returns</h3>
                 <p className="text-sm text-muted-foreground">
-                  Competitive ROI based on market conditions and agricultural cycles
+                  ROI between 10-18% based on package type and market conditions
                 </p>
               </div>
               <div>
