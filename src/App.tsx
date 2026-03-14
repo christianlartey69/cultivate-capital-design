@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import PackageSelection from "./pages/PackageSelection";
 import PaymentSubmission from "./pages/PaymentSubmission";
 import FarmVisitBooking from "./pages/FarmVisitBooking";
+import InvestmentDetails from "./pages/InvestmentDetails";
 
 // Admin pages
 import AdminUsers from "./pages/admin/AdminUsers";

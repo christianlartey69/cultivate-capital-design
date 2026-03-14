@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ArrowRight, TrendingUp, DollarSign, Calendar, MapPin, CheckCircle2 } from "lucide-react";
-import Navbar from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import maizeFarmHero from "@/assets/maize-farm-hero.jpg";
 import pigFarmHero from "@/assets/pig-farm-hero.jpg";
