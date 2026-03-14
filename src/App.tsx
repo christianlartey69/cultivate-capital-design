@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import PackageSelection from "./pages/PackageSelection";
 import PaymentSubmission from "./pages/PaymentSubmission";
 import FarmVisitBooking from "./pages/FarmVisitBooking";
+import InvestmentDetails from "./pages/InvestmentDetails";
 
 // Admin pages
 import AdminUsers from "./pages/admin/AdminUsers";
@@ -65,6 +66,7 @@ const App = () => (
           <Route path="/packages" element={<PackageSelection />} />
           <Route path="/payment" element={<PaymentSubmission />} />
           <Route path="/book-visit" element={<FarmVisitBooking />} />
+          <Route path="/packages/:id" element={<InvestmentDetails />} />
           <Route path="/onboarding" element={<InvestorOnboarding />} />
           <Route path="/farmer-onboarding" element={<FarmerOnboarding />} />
           <Route path="/farmer-dashboard" element={<FarmerDashboard />} />
